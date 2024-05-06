@@ -10,3 +10,7 @@
 /WebApplications/Health_Insurance/Health_Insurance.Api.Store/obj/Debug/net8.0
 /WebApplications/Health_Insurance/Health_Insurance.Api.Store/obj
 /.vs/Health_Insurance/FileContentIndex/459e8d71-8944-4aac-9776-463446433259.vsidx
+/ClassLibraries/Health_Insurance/Health_Insurance.Application/bin/Debug/net8.0
+/ClassLibraries/Health_Insurance/Health_Insurance.Data/bin/Debug/net8.0
+/ClassLibraries/Health_Insurance/Health_Insurance.Domain/bin/Debug/net8.0
+/WebApplications/Health_Insurance/Health_Insurance.Api.Store/bin
