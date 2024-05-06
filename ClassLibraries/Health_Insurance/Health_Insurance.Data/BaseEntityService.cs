@@ -1,6 +1,6 @@
 ﻿using Health_Insurance.Data.EntityFramework.Contexts;
+using Health_Insurance.Domain.Entities;
 using Health_Insurance.Domain.Entities.Base;
-using Health_Insurance.Domain.Entities.File;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 

@@ -2,7 +2,7 @@
 
 namespace Health_Insurance.Data.EntityFramework.Contexts;
 
-public class MigrationDataContext : DataContext
+public class MigrationDataContext : HealthInsuranceDbContext
 {
     public MigrationDataContext() : base(Options)
     {
@@ -19,11 +19,10 @@ public class MigrationDataContext : DataContext
         }
     }
 
-    //To Do
-    private static string migrationConnectionString => "Data Source=192.168.11.110,3823;Initial Catalog=G2ManualScoringDB;Persist Security Info=True;User ID=ApplicationLogin;password=LFC7UQLjodeW734s4;Connection Timeout=60;Max Pool Size=500;";
+    private static string migrationConnectionString => "Data Source=192.168.11.6,3823;Initial Catalog=Health_InsuranceDB;Persist Security Info=True;User ID=m.ghasemzadeh;password=m@123456;Connection Timeout=60;Max Pool Size=500;";
 
 }
 
-//add-migration -context MigrationDataContext Financial
+//add-migration -context MigrationDataContext init
 //update-database -context MigrationDataContext
 //Remove-Migration -context MigrationDataContext

@@ -1,4 +1,5 @@
-﻿using Health_Insurance.Domain.Entities.File;
+﻿using Health_Insurance.Domain.Entities;
+using Health_Insurance.Domain.Entities.File;
 using Microsoft.EntityFrameworkCore;
 namespace Health_Insurance.Data.EntityFramework.Contexts;
 public class BaseDbContext : DbContext

@@ -117,19 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FileNotCreated" xml:space="preserve">
-    <value>File Reord Not Inserted</value>
-  </data>
-  <data name="FileNotDeleted" xml:space="preserve">
-    <value>File Not Deleted</value>
-  </data>
-  <data name="FileNotFound" xml:space="preserve">
-    <value>File Not Found.</value>
-  </data>
-  <data name="NotAnyActiveProvider" xml:space="preserve">
-    <value>No Any Active Provider Found.</value>
-  </data>
-  <data name="NotFoundFileProvider" xml:space="preserve">
-    <value>Not Found Any File Provider</value>
-  </data>
 </root>
