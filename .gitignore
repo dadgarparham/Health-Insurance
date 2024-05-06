@@ -1,0 +1,12 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/ClassLibraries/Health_Insurance/Health_Insurance.Application/obj
+/ClassLibraries/Health_Insurance/Health_Insurance.Data/obj/Debug/net8.0
+/ClassLibraries/Health_Insurance/Health_Insurance.Data/obj
+/ClassLibraries/Health_Insurance/Health_Insurance.Domain/obj/Debug/net8.0
+/ClassLibraries/Health_Insurance/Health_Insurance.Domain/obj
+/WebApplications/Health_Insurance/Health_Insurance.Api.Store/obj/Debug/net8.0
+/WebApplications/Health_Insurance/Health_Insurance.Api.Store/obj
+/.vs/Health_Insurance/FileContentIndex/459e8d71-8944-4aac-9776-463446433259.vsidx
