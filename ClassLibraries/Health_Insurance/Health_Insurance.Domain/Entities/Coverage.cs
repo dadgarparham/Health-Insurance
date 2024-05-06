@@ -9,6 +9,8 @@ public class Coverage
     [StringLength(50)]
     public string Name { get; set; }
 
+    public Int16 CoverageType { get; set; }
+
     [Required]
     public decimal MinimumAmount { get; set; }
 
