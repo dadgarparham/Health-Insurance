@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Health_Insurance.Data\Health_Insurance.Data.csproj" />
+    <ProjectReference Include="..\Health_Insurance.Domain\Health_Insurance.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+	<PackageReference Include="AspNetCore.HealthChecks.Aws.S3" Version="6.0.2" />
+	<PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
+	<PackageReference Include="AspNetCore.HealthChecks.UI" Version="6.0.5" />
+	<PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.5" />
+	<PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="6.0.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DI\" />
+    <Folder Include="Mapper\Profiles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.9.24" />
+	<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
+  </ItemGroup>
+
+</Project>
