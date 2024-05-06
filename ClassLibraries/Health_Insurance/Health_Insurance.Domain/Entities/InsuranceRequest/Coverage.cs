@@ -9,6 +9,9 @@ public class Coverage: BaseEntity<byte>
     {
         InsuranceRequests = new HashSet<InsuranceRequest>();
     }
+    
+    public int CoverageType { get; set; }
+    
     [Required]
     [StringLength(50)]
     public string Name { get; set; } = null!;

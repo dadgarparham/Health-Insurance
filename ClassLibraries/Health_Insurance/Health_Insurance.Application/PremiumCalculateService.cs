@@ -1,6 +1,5 @@
-using Health_Insurance.Data;
+using Health_Insurance.Data.EntityFramework.Contexts;
 using Microsoft.EntityFrameworkCore;
-using Health_Insurance.Domain.Entities;
 using Health_Insurance.Domain.Enums;
 
 namespace Health_Insurance.Application;
@@ -16,7 +15,7 @@ public class PremiumCalculateService
     
     public decimal CalculateTotalPremium(int requestId)
     {
-        var request = _context.RequestsInsurance.Include(r => r.Coverage).FirstOrDefault(r => r.Id == requestId);
+        var request = _context.InsuranceRequests.Include(r => r.Coverages).FirstOrDefault(r => r.Id == requestId);
 
         if (request == null)
         {
@@ -25,7 +24,7 @@ public class PremiumCalculateService
 
         decimal totalPremium = 0;
 
-        switch (request.Coverage.CoverageType)
+        /*switch (request.Coverages.CoverageType)
         {
             case (int)CoverageType.SurgicalCoverage: //جراحی
                 totalPremium += request.Amount * 0.0052m;
@@ -36,7 +35,7 @@ public class PremiumCalculateService
             case (int)CoverageType.BedCoverage: //بستری
                 totalPremium += request.Amount * 0.005m;
                 break;
-        }
+        }*/
 
         request.TotalPremium = totalPremium;
         _context.SaveChanges();

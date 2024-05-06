@@ -19,17 +19,15 @@ builder.Services.AddSwaggerGen(swagger =>
 
 var app = builder.Build();
 
-//if (!app.Environment.IsProduction())
-//{
+if (app.Environment.IsDevelopment())
+{
     app.UseSwagger();
     app.UseSwaggerUI();
-//}
+}
 app.ConfigureCors(builder.Configuration);
 app.UseRouting();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
-app.UseHttpsRedirection();
+app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+//app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();

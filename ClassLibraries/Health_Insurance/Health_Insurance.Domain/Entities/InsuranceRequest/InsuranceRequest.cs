@@ -10,13 +10,15 @@ public class InsuranceRequest: BaseEntity<long>
     {
         Coverages = new List<Coverage>();
     }
-
+    
     [Required]
     [StringLength(255)]
     public string Title { get; set; } = null!;
 
     public List<Coverage> Coverages { get; set; }
 
+    public int CoverageType { get; set; }
+    
     [Required]
     public decimal Amount { get; set; }
 
