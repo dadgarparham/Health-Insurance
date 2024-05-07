@@ -26,8 +26,8 @@ public static class ConfigServiceCollection
 
     public static void AddEntityServiceServices(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<IInsuranceRequestEntityService, InsuranceEntityService>();
-
+        services.AddScoped<IInsuranceRequestEntityService, InsuranceRequestEntityService>();
+        services.AddScoped<IPremiumCalculateService, PremiumCalculateService>();
         services.AddSingleton<IMapper>(ApplicationMapper.Mapper);
         services.AddTransient(typeof(Lazy<>), typeof(Lazy<>));
     }

@@ -19,8 +19,7 @@ public class MigrationDataContext : HealthInsuranceDbContext
         }
     }
 
-    private static string migrationConnectionString => "Data Source=(localdb)\\ProjectsV13;Initial Catalog=Health_InsuranceDB;Integrated Security=SSPI;Persist Security Info=True;Trusted_Connection=True;MultipleActiveResultSets=true;Connection Timeout=60;Max Pool Size=500;";
-
+    private static string migrationConnectionString => "Data Source=(localdb)\\ProjectModels;Initial Catalog=Health_InsuranceDB;Integrated Security=SSPI;Persist Security Info=True;Trusted_Connection=True;MultipleActiveResultSets=true;Connection Timeout=60;Max Pool Size=500;";
 }
 
 //add-migration -context MigrationDataContext init

@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var appSettingSection = builder.Configuration.GetSection("ConnectionStringManager");
 ConfigServiceCollection.AddContextServices(builder.Services, builder.Configuration);
+ConfigServiceCollection.AddEntityServiceServices(builder.Services, builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
@@ -26,7 +27,10 @@ if (app.Environment.IsDevelopment())
 }
 app.ConfigureCors(builder.Configuration);
 app.UseRouting();
-app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 //app.UseHttpsRedirection();
 app.MapControllers();

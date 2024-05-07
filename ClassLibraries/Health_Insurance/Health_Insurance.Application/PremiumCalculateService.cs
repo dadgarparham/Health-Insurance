@@ -1,10 +1,9 @@
 using Health_Insurance.Data.EntityFramework.Contexts;
+using Health_Insurance.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Health_Insurance.Domain.Enums;
-
 namespace Health_Insurance.Application;
 
-public class PremiumCalculateService
+public class PremiumCalculateService : IPremiumCalculateService
 {
     private readonly HealthInsuranceDbContext _context;
 
@@ -13,32 +12,19 @@ public class PremiumCalculateService
         _context = context;
     }
     
-    public decimal CalculateTotalPremium(int requestId)
+    //فقط قراره محاسبه کنه
+    public async Task<decimal> CalculateTotalPremiumAsync(decimal capital, IEnumerable<byte> requestCoverages,
+       CancellationToken cancellationToken = default)
     {
-        var request = _context.InsuranceRequests.Include(r => r.Coverages).FirstOrDefault(r => r.Id == requestId);
-
-        if (request == null)
-        {
-            throw new ArgumentException("Invalid request ID.");
-        }
+        var coverages = await _context.Coverages
+             .AsNoTracking()
+             .ToListAsync(cancellationToken);
 
         decimal totalPremium = 0;
-
-        /*switch (request.Coverages.CoverageType)
+        foreach (var item in requestCoverages)
         {
-            case (int)CoverageType.SurgicalCoverage: //جراحی
-                totalPremium += request.Amount * 0.0052m;
-                break;
-            case (int)CoverageType.DentalCoverage: //دندانپزشکی
-                totalPremium += request.Amount * 0.0042m;
-                break;
-            case (int)CoverageType.BedCoverage: //بستری
-                totalPremium += request.Amount * 0.005m;
-                break;
-        }*/
-
-        request.TotalPremium = totalPremium;
-        _context.SaveChanges();
+            totalPremium += (decimal)coverages.First(x => x.Id == item).PremiumCoefficient * capital;
+        }
 
         return totalPremium;
     }

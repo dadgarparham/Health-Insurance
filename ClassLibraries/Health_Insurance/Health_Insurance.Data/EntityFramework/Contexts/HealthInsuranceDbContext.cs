@@ -12,5 +12,7 @@ namespace Health_Insurance.Data.EntityFramework.Contexts
         }
 
         public DbSet<InsuranceRequest> InsuranceRequests { get; set; }
+        public DbSet<InsuranceRequestCoverage> InsuranceRequestCoverages { get; set; }
+        public DbSet<Coverage> Coverages { get; set; }
     }
 }

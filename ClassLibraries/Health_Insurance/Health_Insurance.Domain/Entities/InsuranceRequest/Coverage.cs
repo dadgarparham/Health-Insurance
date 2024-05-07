@@ -7,14 +7,11 @@ public class Coverage: BaseEntity<byte>
 {
     public Coverage()
     {
-        InsuranceRequests = new HashSet<InsuranceRequest>();
+        InsuranceRequestCoverages = new List<InsuranceRequestCoverage>();
     }
-    
-    public int CoverageType { get; set; }
-    
     [Required]
     [StringLength(50)]
-    public string Name { get; set; } = null!;
+    public string Title { get; set; } = null!;
 
     [Required]
     public decimal MinimumAmount { get; set; }
@@ -22,5 +19,8 @@ public class Coverage: BaseEntity<byte>
     [Required]
     public decimal MaximumAmount { get; set; }
 
-    public HashSet<InsuranceRequest> InsuranceRequests { get; set; }
+    [Required]
+    public float PremiumCoefficient { get; set; }
+
+    public List<InsuranceRequestCoverage> InsuranceRequestCoverages { get; set; }
 }

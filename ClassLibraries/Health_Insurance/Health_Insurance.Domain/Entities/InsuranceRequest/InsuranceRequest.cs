@@ -8,19 +8,23 @@ public class InsuranceRequest: BaseEntity<long>
 {
     public InsuranceRequest()
     {
-        Coverages = new List<Coverage>();
+        InsuranceRequestCoverages = new List<InsuranceRequestCoverage>();
     }
-    
+
     [Required]
     [StringLength(255)]
     public string Title { get; set; } = null!;
 
-    public List<Coverage> Coverages { get; set; }
+    public List<InsuranceRequestCoverage> InsuranceRequestCoverages { get; set; }
 
-    public int CoverageType { get; set; }
-    
     [Required]
-    public decimal Amount { get; set; }
+    public decimal Capital { get; set; }
 
     public decimal TotalPremium { get; set; }
+    public static bool CheckCapitalValidity(decimal capital, List<Coverage> coverages)
+    {
+       var minCoverage = coverages.MinBy(x => x.MinimumAmount)!.MinimumAmount;
+        var maxCoverage = coverages.MaxBy(x => x.MaximumAmount)!.MaximumAmount;
+        return capital >= minCoverage && capital  <= maxCoverage;
+    }
 }

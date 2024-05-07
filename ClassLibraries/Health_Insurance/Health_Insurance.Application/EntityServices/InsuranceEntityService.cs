@@ -1,55 +1,85 @@
-﻿using AutoMapper;
-using Health_Insurance.Data;
+﻿using Health_Insurance.Data;
 using Health_Insurance.Data.EntityFramework.Contexts;
 using Health_Insurance.Domain.Entities;
 using Health_Insurance.Domain.Entities.File;
+using Health_Insurance.Domain.Extensions;
+using Health_Insurance.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Health_Insurance.Application.EntityServices;
 
-public class InsuranceEntityService : BaseEntityService<InsuranceRequest>, IInsuranceRequestEntityService
+public class InsuranceRequestEntityService : BaseEntityService<InsuranceRequest>, IInsuranceRequestEntityService
 {
-    private readonly IMapper _mapper;
-    private DbSet<Coverage> _coverageEntityService;
     private readonly IPremiumCalculateService _premiumCalculateService;
-    public InsuranceEntityService(
+    private readonly HealthInsuranceDbContext _context;
+    public InsuranceRequestEntityService(
         HealthInsuranceDbContext context,
-        DbSet<Coverage> coverageEntityService,
-        IPremiumCalculateService premiumCalculateService,
-        IMapper mapper) : base(context)
+        IPremiumCalculateService premiumCalculateService) : base(context)
     {
-        _mapper = mapper;
-        _coverageEntityService = coverageEntityService;
+        _context = context;
         _premiumCalculateService = premiumCalculateService;
     }
 
     public async Task<ReturnResult<bool>> AddInsuranceRequestAsync(InsuranceRequestDto insuranceRequest, CancellationToken cancellation = default)
     {
         var result = new ReturnResult<bool>();
-        var coverages = await _coverageEntityService
+        var coverages = await _context.Coverages
             .AsNoTracking()
-            .Where(x => insuranceRequest.CoverageIdlist.Contains(x.Id))
             .ToListAsync(cancellation);
-        if (coverages is null || !coverages.Any())
+        var requestCoverages = coverages
+            .Where(x => insuranceRequest.CoverageIds.Distinct().Contains(x.Id));
+        if (coverages.IsNullOrEmpty())
         {
-            throw new Exception("");
+            return result.UnSuccessResult("هر درخواست باید حداقل یک پوشش را داشته باشد");
         }
+
+        if (!InsuranceRequest.CheckCapitalValidity(capital: insuranceRequest.Capital, coverages: coverages))
+        {
+            return result.UnSuccessResult("مقدار وارد شده در این فیلد باید در محدوده حداقل و حداکثر سرمایه تعیین شده باشد");
+        }
+        var totalPremium = await _premiumCalculateService.CalculateTotalPremiumAsync(capital: insuranceRequest.Capital,
+           requestCoverages: requestCoverages.Select(x => x.Id));
         var created = await CreateAsync(new InsuranceRequest()
         {
-            Amount = insuranceRequest.Amount,
+            Capital = insuranceRequest.Capital,
             Title = insuranceRequest.Title,
-            Coverages = coverages,
-            TotalPremium = 100 // ToDo -- get from _premiumCalculateService
+            InsuranceRequestCoverages = requestCoverages.Select(x => new InsuranceRequestCoverage()
+            {
+                CoverageId = x.Id,
+            }).ToList(),
+            TotalPremium = totalPremium
         });
         return created ? result.SuccessResult(created) : result.UnSuccessResult("error in created");
     }
 
-    public async Task<ReturnResult<bool>> GetInsuranceRequestAsync(long id, CancellationToken cancellation = default)
+    public async Task<ReturnResult<GetInsuranceRequestPagedListModel>> GetInsuranceRequestListAsync(GetInsuranceRequestParameters parameters,
+        CancellationToken cancellation = default)
     {
-        var result = new ReturnResult<bool>();
-        var data = await AllAsNoTracking()
-            .Where(x => x.Id == id)
+        var data = new ReturnResult<GetInsuranceRequestPagedListModel>()
+        {
+            Result = new GetInsuranceRequestPagedListModel()
+        };
+        var query =  _context.InsuranceRequests
+            .AsNoTracking()
+            .Where(item => !parameters.Id.HasValue || parameters.Id.Value == item.Id)
+            .Where(item => !parameters.Capital.HasValue || parameters.Capital.Value == item.Capital)
+            .Where(item => string.IsNullOrEmpty(parameters.Title) || parameters.Title.Contains(item.Title))
+            .Select(x => new GetInsuranceRequestListDto()
+            {
+                Id = x.Id,
+                Capital = x.Capital,
+                Title = x.Title,
+                TotalPremium = x.TotalPremium
+            });
+        data.Result.TotalRow = await query.CountAsync(cancellation);
+
+        data.Result.Results = await query
+            .OrderByDescending(x => x.Id)
+            .Skip(parameters.PageSize * (parameters.PageNumber - 1))
+            .Take(parameters.PageSize)
             .ToListAsync(cancellation);
-        return result;
+
+        return data.SuccessResult(data.Result);
     }
 }
