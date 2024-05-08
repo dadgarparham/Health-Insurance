@@ -4,6 +4,7 @@ using Health_Insurance.Domain.Entities;
 using Health_Insurance.Domain.Entities.File;
 using Health_Insurance.Domain.Extensions;
 using Health_Insurance.Domain.Models;
+using Health_Insurance.Domain.Resources;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -31,12 +32,12 @@ public class InsuranceRequestEntityService : BaseEntityService<InsuranceRequest>
             .Where(x => insuranceRequest.CoverageIds.Distinct().Contains(x.Id));
         if (coverages.IsNullOrEmpty())
         {
-            return result.UnSuccessResult("هر درخواست باید حداقل یک پوشش را داشته باشد");
+            return result.UnSuccessResult(Health_InsuranceResource.NotFoundInsuranceCoverage);
         }
 
         if (!InsuranceRequest.CheckCapitalValidity(capital: insuranceRequest.Capital, coverages: coverages))
         {
-            return result.UnSuccessResult("مقدار وارد شده در این فیلد باید در محدوده حداقل و حداکثر سرمایه تعیین شده باشد");
+            return result.UnSuccessResult(Health_InsuranceResource.NotValidMinMax);
         }
         var totalPremium = await _premiumCalculateService.CalculateTotalPremiumAsync(capital: insuranceRequest.Capital,
            requestCoverages: requestCoverages.Select(x => x.Id));

@@ -104,5 +104,26 @@ namespace Health_Insurance.Domain.Resources {
                 return ResourceManager.GetString("NotFoundFileProvider", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Not Found Any File Provider.
+        /// </summary>
+        public static string NotValidMinMax {
+            get {
+                return ResourceManager.GetString("NotValidMinMax", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Not Found Any File Provider.
+        /// </summary>
+        public static string NotFoundInsuranceCoverage
+        {
+            get
+            {
+                return ResourceManager.GetString("NotFoundInsuranceCoverage", resourceCulture);
+            }
+        }
+
     }
 }
